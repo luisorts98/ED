@@ -1,0 +1,114 @@
+/*! \mainpage Práctica 2: TDAs Lineales. Pilas y Colas
+## Realizado por:
+### Luis Orts Ferrer
+### Younes Aghani
+
+# Introducción
+Los TDAs (tipo de datos abstractos) se componen de una secuencia de elementos
+dispuestos en una dimensión. Dentro de los diferentes tipos de TDAs en esta práctica
+trabajeremos con las pilas y las colas.
+Cada uno de estos TDAs tienen una forma diferente de acceder a los datos. Por un
+lado, la pila es un contenedor de tipo LIFO (Last In First Out) y la cola es un
+contenedor de tipo FIFO (First In First Out).
+
+Para desarrollar las clases solicitadas por la práctica, MaxStack y MaxQueue,
+usaremos los dos TDAs indicados previamente. Estas clases nos permitirán obtener
+tanto el elemento que se quiera consultar como el máximo elemento almacenado en el
+contenedor en ese momento.
+
+Pese al funcionamiento de la implementación en MaxStack debe de corresponder al
+funcionamiento de una pila se debe de usar como contenedor subyacente una cola y de
+igual manera en el funcionamiento de MaxQueue debe de ser como el funcionamiento de
+una cola, se usará como contenedor subyacente una pila.
+
+##MaxStack
+Como se ha comentado previamente en las pilas se usará una política LIFO, por tanto en la implementación
+de este clase se deberá tener en cuenta que las pilas tienen una sección para el último valor añadido, top,
+donde se realizarán las inserciones y borrados. Por tanto para realizar de manera correcta esta clase,
+se han creado diferentes métodos:
+- Push, para colocar un elemento en la parte superior de la pila.
+- Top, para consultar el elemento en la parte superior de la pila.
+- Pop, para extraer un elemento en la parte superior de la pila. Al tener política LIFO se extrae y se inserta en la misma zona.
+- Size, para indicar el tamaño de la pila.
+- Empty, para indica si la pila está vacía.
+
+@image html Stack.png
+
+En está clase se realizará una implementación más sencilla a la que veremos a continuación en MaxQueue, ya que el valor máximo almacenado
+en la pila no varía en el momento que se inserta o se extrae un elemento. Ya que al insertarse, los elementos restantes son los mismos que cuando
+ese elemento se retira y los elementos posteriores que se insertan, no están presentes en el momento de extracción. Y los
+elementos introducidos antes, no se pueden modificar hasta la extracción de ese elemento. Por tanto cuando introducimos
+un nuevo elemento se comparará su valor con el valor máximo de la pila y si el valor nuevo es menor que ese máximo,
+el valor máximo del elemento nuevo cambiará al valor que máximo que ya tenía la pila. En caso contrario no hace falta modificar el máximo
+de la pila, puesto que al introducir el nuevo elemento, este contendrá su valor máximo modificado.
+
+##MaxQueue
+Como se ha comentado previamente en las colas se usará una política FIFO, por tanto en la implementación
+de este clase se deberá tener en cuenta que las colas tienen dos secciones, la parte Front,
+donde se realizan los borrados, y la parte Back, donde se realizan las inserciones. En ambas se pueden hacer consultas.
+Por tanto, para realizar de manera correcta esta clase, se han creado diferentes métodos:
+- Push, donde se coloca un elemento al final de la cola.
+- Front, donde se consulta un elemento al principio de la cola.
+- Pop, para extraer un elemento al principio de la cola. Al tener política FIFO se extrae el primero en entrar.
+- Size, para indicar el tamaño de la cola.
+- Empty, para indicar si la cola está vacía.
+
+@image html PushCola.png
+
+En está clase al insertar un elemento, tenemos que realizar una implementación diferente a la de la clase
+MaxStack puesto que tenemos una cola la cual debemos tener información del valor máximo dentro de la cola.
+Es diferente a la pila ya que en la inserción, si el nuevo elemento es el máximo de la cola, habrá que actualizar todos
+los elementos que estén delante para que en el caso de hacer múltiples operaciones pop, el máximo mostrado sea correcto.
+
+Para ello en el método push se realizará una comprobación entre el valor del nuevo elemento y el valor del
+máximo elemento que había en la cola: Si el valor del nuevo elemento es mayor se cambiará el valor máximo de la cola al
+valor de ese elemento y si no se añadirá simplemente el valor de ese elemento sin cambiar el valor máximo de la cola.
+En los métodos se explica detalladamente la implementación.
+
+# Ejecutables
+
+Para poder comprobar el funcionamiento de los dos TDAs implementados en esta práctica, se
+proporcionan dos ejecutables: pila_max y cola_max. A continuación se explicarán con detalle su
+funcionamiento:
+
+##Pila_max
+
+Es el ejecutable encargado de probar el funcionamiento del TDA MaxStack. Como se comenta en la práctica,
+este programa itera sobre los argumentos de entrada que acompañan a la ejecución, realizando las siguientes
+condiciones: si el elemento es numérico, lo inserta en la pila y si el elemento es un punto, saca de la pila un
+elemento. Para realizar esta función, el ejecutable está implementado de la siguiente manera:
+
+> _pila_max_ \<Elementos> \<Puntos>
+
+@param Elementos elementos de tipo entero que se añadirán a la pila
+@param Puntos cada punto introducido imprime por pantalla el top de la pila y extrae el elemento situado en el top.
+@pre No puede haber un número de puntos mayor que el número de elementos, pueden ser o menor o igual.
+Al introducir los parametros, se pueden añadir tantos elementos como se quiera y se puede ir añadiendo varios
+puntos o elementos consecutivos siguiendo las condiciones previas necesarias.
+
+En este ejecutable primero creamos la varible de tipo MaxStack stack, posteriormente recorremos el número de argumentos
+pasados al ejecutable leyendo cada dato de tipo char, si el argumento es un ".", se mostrará el elemento situado en el
+top de la pila junto con el valor máximo que tiene la pila en ese momento y a continuación saca ese elemento de la pila.
+En cambio si el argumento es un entero lo introduce en la cola y se calcula el máximo teniendo en cuenta el nuevo elemento.
+
+##Cola_max
+
+Es el ejecutable encargado de probar el funcionamiento del TDA MaxQueue. Como se comenta en la práctica,
+este programa itera sobre los argumentos de entrada que acompañan a la ejecución, realizando las siguientes
+condiciones: si el elemento es numérico, lo inserta en la cola y si el elemento es un punto, saca de la cola un
+elemento. Para realizar esta función, el ejecutable está implementado de la siguiente manera:
+
+> _cola_max_ \<Elementos> \<Puntos>
+
+@param Elementos elementos de tipo entero que se añadirán a la cola
+@param Puntos cada punto introducido imprime por pantalla el front de la cola y extrae el elemento situado en el front.
+@pre No puede haber un número de puntos mayor que el número de elementos, pueden ser o menor o igual.
+Al introducir los parametros, se pueden añadir tantos elementos como se quiera y se puede ir añadiendo varios
+puntos o elementos consecutivos siguiendo las condiciones previas necesarias.
+
+En este ejecutable primero creamos la variable de tipo MaxQueue queue, posteriormente recorremos el número de argumentos
+pasados al ejecutable leyendo cada dato de tipo char, si el argumento es un ".", se mostrará el elemento situado en el
+front de la cola junto con el valor máximo que tiene la pila en ese momento y a continuación saca ese elemento de la cola.
+En cambio si el argumento es un entero lo introduce en la cola y se calcula el máximo teniendo en cuenta el nuevo elemento.
+
+*/
