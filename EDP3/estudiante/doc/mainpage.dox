@@ -1,0 +1,115 @@
+/*! \mainpage Contenedores no lineales
+## Realizado por:
+### Luis Orts Ferrer
+### Younes Aghani
+
+# Introducción
+En esta práctica, nos centraremos en el juego conocido como cifras y letras. Debido a la complejidad para desarrollar este juego, dividiremos su implementación 
+en diferentes prácticas, para esta práctica se realizará la implementación de la prueba específica de las letras. Centrandonos sobre todo en la
+la forma de almacenar los datos necesarios para realizar esta prueba, para ello recurriremos a crear TDAs que contendrán contenedores de tipo no lineales y a 
+diferentes herramientas para poder acceder, recorrer y modificar los diferentes elementos de los contenedores, explicado en los siguientes apartados.
+
+
+##Juego de letras
+Esta parte del juego consiste en formar la mejor palabra posible, depenediendo
+de los criterios explicados en el documendo de prácticas, a partir de un conjunto
+de letras extraídas al azar de una bolsa. Podemos tener dos modalidades de juego, el primero
+en que se tiene en cuenta la longitud de la palabra(gana el que obtenga la palabra más larga) y 
+la segunda modalidad en la que a cada letra se le asigna una puntuación, y la puntuación de la palabra será igual a la suma de las puntuaciones de las letras que la
+componen.
+
+
+##Contenedores no lineales
+Debido al tipo de información con la que tenemos que trabajar, los contenedores no lineales que 
+hemos utilizado hasta ahora no son la mejor solución. Puesto que debemos de trabajar con información
+muy específica y un orden predefinido se usará un contenedor de tipo no lineal también llamado asociativo
+que como se ha comentado previamente usando este tipo de contendot los elementos se insetan en un orden 
+predefinido. Este tipo de contenedores se divide en diferentes tipos, en esta práctica se usaran en concreto
+dos, set y map.
+-Set: La clase set representa un conjunto de elementos de cualquier tipo que se disponen de manera ordenada y en el
+que no se repiten elementos.
+-Map: Un map está formado por parejas de valores: al primero se lo conoce como clave, y al segundo
+como el valor asociado a dicha clave. No permite valores de clave repetidos y se ordena según su
+clave. Podemos acceder, de forma directa, al valor asociado a la clave a través de la clave, pero no
+al revés.
+Set y map cuentan con diferentes métodos para consultar tamaño, eliminar, buscar elementos dentro del contenedor
+los cuales se usan y se explican en los TDAs de la práctica.
+
+
+##Iteradores
+Es un objeto que apunta a un elemento de un contenedor, este permite recorrer los elementos 
+alamacenados en un contenedor de manera secuencial sin exponer sus detalles internos.
+Los iteradores se han usado en esta práctica para recorrer los contenedores no lineales explicados
+previamente y poder consultar los diferentes elementos de dichos contenedores.
+
+En está practica se implementarán dos tipos de iteradores, iterator y const_iterator.
+La diferencia entre cada uno se encuentra en el tipo de contenedor que recorren, iterator
+se usará para el tipo de contenedor generico y el const_iterator recorrerá contenedores constantes.
+Si intentaramos usar un iterator en un contenedor constante nos generaría un error
+
+##Template
+Funcionalidad que nos permite implementar código genérico, que funcione para cualquier tipo de dato.
+
+A continuación indicaremos los TDAs usados para realizar la práctica indicando su función y que 
+herramientas explicadas anteriormente se han usado y el motivo de su uso.
+
+##LetterSet
+Usada para almacenar la información de un conjunto de letras, para cada letra tendrá la siguiente información:
+- El número total de repeticiones de la letra
+- La puntuación que nos aporta cada letra 
+Esta información se almacena en un struct
+Para ello la información que se almacenará apunta directamente al tipo de estructura map
+usando como valor clave cada una de las letras y como valor el struct que contiene la información de cada letra
+
+##Bag
+TDA usado para implementar una bolsa de caracteres, no solamente letras, podrian ser números,structs etc.
+Este TDA permite extraer los caracteres de manera aleatoria. 
+Para poder trabajar con los diferentes tipos permitidos usaremos la funcionalidad templates. Como excepción en esta 
+práctica, usaremos el contenedor lineal vector el cual no indicaremos el tipo puesto que estamos usando templates.
+
+
+LettersBag:
+La clase LettersBag representa una clase Bag más específica, dado que ya no se habla de una clase template sino que se trata internamente de un Bag de caracteres. 
+Este TDA se encargará de crear la bolsa de letras que habrá que usar en una partida, 
+cogiendo un LettersSet e interpretando correctamente la información que contiene, es decir, saber cuántas veces se repite cada letra e insertarla tantas veces en la bolsa.
+ Además, permitiría la extracción de elementos (es este caso, caracteres) de manera aleatoria, además de las funcionalidades usuales como la consulta del tamaño o el borrado de todos los elementos a la vez.
+
+Dictionary:
+El TDA Dictionary almacena el conjunto de palabras que se usarían en la partida de letras. 
+La necesidad de cumplir propiedades como el respeto del orden alfabético y la imposibilidad de tener elementos repetidos nos lleva a usar un "set" que contiene datos de tipo string como estructura de datos. 
+Lo que nos facilita la implementación de algunos métodos (insert, erase, clear, size, ...). La implementación es este TDA requiere el uso de un iterator para recorrer las palabras del diccionario y del uso de un
+const_iterator en el caso de tener un diccionario de tipo constante.
+
+
+# Ejecutables
+conjunto_letras:
+El programa de prueba conjunto_letras permite comprobar el funcionamiento de la clase LettersSet. Recibe como argumentos un archivo de texto y una palabra.
+A la hora de ejecutar el programa, se crea un objeto LettersSet a partir del archivo de texto dado como argumento, usando la sobrecarga del operador >> implementado en la clase LettersSet. Este archivo representa un conjunto de letras de forma que cada línea contiene una letra, el número de veces que se repite en así como cuántos puntos vale si se encuentra en una palabra, teniendo en cuenta que la primera línea es una cabecera informando de qué representa cada sección. A continuación, se guarda la palabra (segundo argumento del programa) como un dato string y se imprime por pantalla cuántos puntos vale dicha palabra, utilizando el método "getScore" para el cálculo y la sobrecarga del operador << para la impresión.
+
+bolsa:
+El programa bolsa comprueba que los métodos de la clase Bag se hayan implementado correctamente. Los argumentos que recibe son un carácter en mayúscula y otra secuencia de elementos del mismo tipo, separados por espacios entre sí.
+La ejecución del programa empieza usando el generador de números aleatorios "srand" usando "time" para que los números aleatorios que se generen no sean los mismos en cada ejecución.
+- Después, si el primer carácter es una "C" se crea un objeto Bag que almacenará datos de tipo string, que serán los elementos introducidos después de la "C". Usando el método "add", se añade cada uno de los caracteres al Bag.
+- En el caso en que el primer carácter introducido sea una "I" entonces el objeto Bag creado almacenará datos de tipo int. Si los elementos introducidos son carácteres, se convierten en números enteros utilizando "atoi" para poder introducirlos en la bolsa.
+Finalmente, se usa el método "get" así como la sobrecarga del operador << para obtener cada elemento (y eliminarlo) de la bolsa e imprimirlo por pantalla.
+
+bolsa_letras:
+En cuanto al programa bolsa_letras, sirve para verificar el buen funcionamiento de la clase LettersBag. Dicho programa recibe como argumento un archivo de texto similar al usado en el programa conjunto_letras.
+Primero se crea un objeto LettersSet a partir del archivo de texto. Luego utilizando la sobrecarga del operador >> se crea un objeto LettersBag que contenga las letras de dicho LettersSet. Y al final se usa la sobrecarga del operador << con el fin de mostrar por pantalla las letras de la bolsa, extrayéndolas de manera aleatoria usando el método "extractLetter".
+
+palabras_longitud:
+El programa palabras_longitud permite comprobar los métodos usados en la clase Dictionary. Recibe como argumentos un archivo de texto y un número entero.
+El archivo de texto que se introduce como argumento al programa es formado por palabras, de manera que cada línea contiene una palabra. Además antes de cada conjunto de palabras empezando por la misma letra, una línea encima contiene la letra de la que se trata. Dicho esto, el programa crea un objeto Dictionary a partir de la información almacenada en el archivo de texto (usando la sobrecarga del operador >>) y guarda el segundo argumento (dato de tipo int) como "longitud". A continuación, se almacenan en un vector las palabras del diccionario (objeto Dictionary) con esa longitud, usando el método "wordsOfLength". Finalmente, se imprime en pantalla todos los elementos insertados en el vector.
+
+cantidad_letras::
+Por último, el programa cantidad_letras también verifica el funcionamiento de los métodos de la clase Dictionary, recibiendo como argumentos dos archivos de texto.
+El programa empieza cogiendo el primer argumento que es un archivo de texto correspondiente a la clase Dictionary, y crea un objeto Dictionary utilizando la sobrecarga del operador >>. Después crea un LettersSet a partir del segundo argumento (otro archivo de texto, que corresponde a la clase LettersSet, como se ha explicado anteriormente). Seguidamente se recorren todas la letras presentes en el objeto LettersSet creado, calculando para cada una cuántas veces aparece en el objeto Dictionary (usando el método "getOcurrences") así como su frecuencia (dividiendo el número de ocurrencias entre el número total de letras que contiene el diccionario), imprimiendo ambos datos por pantalla, juntos a su letra correspondiente.
+
+
+
+##Errores generados
+Pese a buscar todo tipo de soluciones al realizar la compilación con el ejecutable "juez.sh" obtenemos un fallo en la parte privada de la prueba de cantidad_letras, pese a tener un correcto
+funcionamiento del programa. Pese a creer que el problema procedía de la forma de recorrer las letras de LettersSet, se recorria desde la A hasta la Z, se cambío a una forma más óptima y adecuada
+recorriendo mediante un iterador hacia LettersSet, pero seguimos opteniendo el mismo resultado. Esperemos encontrar el problema fuera del plazo de la práctica.
+
+*/
